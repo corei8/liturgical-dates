@@ -1,12 +1,39 @@
+from math import floor
 from datetime import datetime
+from icecream import ic
+
+
+def interger_to_roman(A=int) -> int:
+    romans = {
+        1: "I", 5: "V", 10: "X", 50: "L", 100: "C",
+        500: "D", 1000: "M", 5000: "G", 10000: "H",
+    }
+    div, result = 1, ''
+    while A >= div:
+        div *= 10
+    div /= 10
+    while A:
+        last_num = int(A / div)
+        if last_num <= 3:
+            result += (romans[div]*last_num)
+        elif last_num == 4:
+            result += (romans[div]+romans[div*5])
+        elif 5 <= last_num <= 8:
+            result += (romans[div*5]+(romans[div]*(last_num-5)))
+        elif last_num == 9:
+            result += (romans[div]+romans[div*10])
+        A = floor(A % div)
+        div /= 10
+    return result
+
 
 def dominical(year=int) -> str:
     letter, y, c = '', int(str(year)[2:]), int(str(year)[:2])
-    index = (y+(y/4)+5*(c % 4)-1)%7
+    index = (y+(y/4)+5*(c % 4)-1) % 7
     letters = ['G', 'F', 'E', 'D', 'C', 'B', 'A']
-    try: 
-        datetime(year, 2, 29) # check for leap year
-        first_letter, second_letter = '', ''
+    first_letter, second_letter = '', ''  # ? can this be simplified?
+    try:
+        datetime(year, 2, 29)  # check for leap year
         first_letter = letters[int(index)-1]
         if int(index) < 0:
             first_letter = letters[6]
@@ -14,8 +41,64 @@ def dominical(year=int) -> str:
     except ValueError:
         second_letter = letters[int(index)]
     letter = first_letter+second_letter
-    print(letter)
     return letter
 
 
-dominical(2024)
+def golden_number(year=int) -> int:
+    return (year+1) % 19
+
+
+def epact_adjust(year=int) -> int:
+    l, s = 0, 0
+    c = int(str(year)[:2])
+    if c % 2:
+        l = -1
+    if not (c-2) % 4:
+        l = -1
+    if not c % 3:
+        if not (c-17) % 25:
+            s = 0
+        else:
+            s = 1
+    if not (c-18) % 25:
+        s = 1
+    return l + s
+
+
+def epact_build(adjust=int) -> list:
+    build_base = []
+    day = 1
+    x = 0
+    while x != 19:
+        day += 11*(x if x == 0 else 1)
+        if day > 30:
+            day -= 30
+        build_base.append(day)
+        x += 1
+    build = []
+    for y in build_base:
+        y += adjust
+        if y > 31:
+            y -= 31
+        elif y <= 0:
+            y += 31
+        build.append(y)
+    ic(build)
+    return build
+
+
+def epact(year=int) -> str:
+    e = ''
+    base = 1600
+    i = 0
+    while year >= base:
+        i += epact_adjust(year)
+        year -= 100
+    epact_list = epact_build(i)
+    ic(golden_number(year))
+    e = interger_to_roman(epact_list[golden_number(year)-1])
+    if e == 'XXXI':
+        e = '*'
+    return e
+
+ic(epact(2022))
