@@ -1,6 +1,5 @@
 from math import floor
 from datetime import datetime
-from icecream import ic
 
 
 def interger_to_roman(A=int) -> int:
@@ -31,9 +30,9 @@ def dominical(year=int) -> str:
     letter, y, c = '', int(str(year)[2:]), int(str(year)[:2])
     index = (y+(y/4)+5*(c % 4)-1) % 7
     letters = ['G', 'F', 'E', 'D', 'C', 'B', 'A']
-    first_letter, second_letter = '', ''  # ? can this be simplified?
+    first_letter, second_letter = '', ''
     try:
-        datetime(year, 2, 29)  # check for leap year
+        datetime(year, 2, 29)
         first_letter = letters[int(index)-1]
         if int(index) < 0:
             first_letter = letters[6]
@@ -49,8 +48,7 @@ def golden_number(year=int) -> int:
 
 
 def epact_adjust(year=int) -> int:
-    l, s = 0, 0
-    c = int(str(year)[:2])
+    l, s, c = 0, 0, int(str(year)[:2])
     if c % 2:
         l = -1
     if not (c-2) % 4:
@@ -66,9 +64,7 @@ def epact_adjust(year=int) -> int:
 
 
 def epact_build(adjust=int) -> list:
-    build_base = []
-    day = 1
-    x = 0
+    build_base, day, x = [], 1, 0
     while x != 19:
         day += 11*(x if x == 0 else 1)
         if day > 30:
@@ -83,22 +79,20 @@ def epact_build(adjust=int) -> list:
         elif y <= 0:
             y += 31
         build.append(y)
-    ic(build)
     return build
 
 
 def epact(year=int) -> str:
-    e = ''
-    base = 1600
-    i = 0
+    e, base, i = '', 1600, 0
     while year >= base:
         i += epact_adjust(year)
         year -= 100
     epact_list = epact_build(i)
-    ic(golden_number(year))
     e = interger_to_roman(epact_list[golden_number(year)-1])
     if e == 'XXXI':
         e = '*'
     return e
 
-ic(epact(2022))
+
+dominical(year=int(input("Dominical letter for year: ")))
+epact(year=int(input("Epact for year: ")))
