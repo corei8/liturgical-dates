@@ -7,17 +7,17 @@ Just a collections of functions for calculating liturgical dates. The goal is no
 Not a date, but a useful function for the correct output of the epact.
 
 ```python
-def interger_to_roman(A=int) -> int:
+def interger_to_roman(num=int) -> int:
     romans = {
         1: "I", 5: "V", 10: "X", 50: "L", 100: "C",
         500: "D", 1000: "M", 5000: "G", 10000: "H",
     }
     div, result = 1, ''
-    while A >= div:
+    while num >= div:
         div *= 10
     div /= 10
-    while A:
-        last_num = int(A / div)
+    while num:
+        last_num = int(num / div)
         if last_num <= 3:
             result += (romans[div]*last_num)
         elif last_num == 4:
@@ -26,7 +26,7 @@ def interger_to_roman(A=int) -> int:
             result += (romans[div*5]+(romans[div]*(last_num-5)))
         elif last_num == 9:
             result += (romans[div]+romans[div*10])
-        A = floor(A % div)
+        num = floor(num % div)
         div /= 10
     return result
 ```
