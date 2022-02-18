@@ -65,6 +65,9 @@ def golden_number(year=int) -> int:
 ```
 
 ## Epact (for the years 1600-5199)
+
+This does not calculate the special 25th epact. This is being worked on.
+
 ```python
 def epact_adjust(year=int) -> int:
     l, s, c = 0, 0, int(str(year)[:2])
