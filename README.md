@@ -3,6 +3,9 @@
 Just a collections of functions for calculating liturgical dates. The goal is not to be scientifically accurate, but to be accurate according to the Gregorian Calendar. The dates for the moon are rarely off by more than a day, and work with this margin of error until about the year 5200.
 
 ## Convert an interger to roman numerals
+
+Not a date, but a useful function for the correct output of the epact.
+
 ```python
 def interger_to_roman(A=int) -> int:
     romans = {
