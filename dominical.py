@@ -89,6 +89,7 @@ def epact(year=int) -> str:
         year -= 100
     epact_list = epact_build(i)
     e = interger_to_roman(epact_list[golden_number(year)-1])
+    # todo determine what has to be done for the special case of the 25th epact
     if e == 'XXXI':
         e = '*'
     return e
